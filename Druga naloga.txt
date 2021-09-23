@@ -1,0 +1,41 @@
+.text
+
+TABELA: 	   .hword 1, 5, -1, 8, -130, 1024, 10, 64, -80, 256
+VELIKOST_TABELE:   .byte 10
+                   .align
+MIN:               .hword 10
+MIN_INDEKS :       .hword 1
+ 
+
+      .align 
+      .global __start
+
+__start:
+
+      adr r0, TABELA
+      adr r1, MIN
+      adr r2, MIN_INDEKS
+      mov r5, #0  @stevec
+      mov r6, #0  @indeks
+      adr r7, VELIKOST_TABELE
+      
+loop: ldrsh r3, [r0]
+      ldrsh r4, [r1]
+      ldrsb r8, [r7]
+
+      cmp r3, r4
+      movlt r4, r3
+      movlt r6, r5 
+      
+      strh r4, [r1]
+      strh r6, [r2]
+      
+      add r0, #2
+      add r5, #1
+      sub r8, #1
+      strb r8, [r7]
+      
+      cmp r8, #0x00
+      bgt loop
+
+__end:    b __end

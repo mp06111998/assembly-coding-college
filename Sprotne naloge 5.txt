@@ -1,0 +1,82 @@
+1) naloga   
+       .text
+
+STEV1:          .word   10 
+STEV2:          .word   5 
+REZ_VSOTA:      .space  4 
+REZ_RAZLIKA:    .space  4  
+
+          .align
+          .global __start
+__start:                                           
+          adr   r1, STEV1 
+          adr   r2, STEV2
+          adr   r3, REZ_VSOTA 
+          adr   r4, REZ_RAZLIKA
+          
+          ldr   r5,  [r1]
+          ldr   r6,  [r2]
+          add   r7, r5, r6
+          sub   r8, r5, r6
+          str   r7, [r3]
+          str   r8, [r4]
+            
+__end:    b __end   
+
+2) naloga
+        .text
+
+STEV1:  .word 0x50
+STEV2:  .word 100       
+STEV3:  .word 0x2F    
+
+          .align
+          .global __start
+__start:                                           
+          adr   r1, STEV1 
+          adr   r2, STEV2
+          adr   r3, STEV3
+          
+          @ STEV1 = STEV2 + STEV3 - STEV1 
+          
+          @ TEMP1 = STEV2 + STEV3
+          @ TEMP2 = TEMP1 - STEV1
+          @ STEV1 = TEMP2
+            
+          ldr   r4, [r1]  @r4 = STEV1
+          ldr   r5, [r2]  @r5 = STEV2
+          ldr   r6, [r3]  @r6 = STEV3
+          
+          add   r7, r5, r6  @ TEMP1 = STEV2 + STEV3
+          sub   r8, r7, r4  @ TEMP2 = TEMP1 - STEV1
+          str   r8, [r1]    @ STEV1 = TEMP2
+          
+          
+__end:    b __end   
+
+3) naloga
+      .text
+
+STEV1:  .word 0x12345678
+STEV1:  .word   0x12345678       
+STEV2:  .byte   128   
+        .align  1
+STEV3:  .hword  0xF123 
+
+          .align
+          .global __start
+__start:                                           
+          adr   r0, STEV1
+          ldr   r1, [r0]  @ a)
+          
+          adr   r0, STEV2
+          ldrb  r2, [r0]  @ b)
+          
+          ldrsb r3, [r0]  @ c)
+          
+          adr   r0, STEV3
+          ldrh  r4, [r0]  @ d)
+          ldrsh r5, [r0]  @ e)
+          
+          
+__end:    b __end   

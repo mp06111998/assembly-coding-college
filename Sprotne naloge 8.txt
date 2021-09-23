@@ -1,0 +1,70 @@
+1. naloga
+	  .text   
+STEV1:    .space  4 
+STEV2:    .word   0x7fffffff 
+STEV3:    .word   0x80000001 
+
+          .align
+          .global __start
+__start:                                           
+          @ STEV1 = STEV2+ STEV3
+          adr r0, STEV2
+          ldr r2, [r0]
+          adr r0, STEV3
+          ldr r3, [r0]
+          adr r0, STEV1
+          
+          adds r1, r2, r3
+	
+	  @ stanje zastavic po ukazu: NZCV = (0 1 1 0)
+	  @sesteli smo najvecje stevilo pozitivno stevilo v dvojiskem komplimentu
+	  @z drugim najmanjsim st. v dvojiskem komplimentu na 32 bitov
+	  @ rezultat je torej 0
+          
+          str r1, [r0]
+          
+__end:    b __end 
+
+2. naloga
+STEV1: .word 0	
+STEV2: .word 0xffffffff	
+
+_start:
+	adr r0, STEV1
+	ldr r2,[r0]
+	ldr r3,[r0,#4]
+
+	adds r1,r2,r3 
+	str r1, [r0]
+
+3. naloga
+@ N=1 Z=0 C=0 V=0
+a) bcc	@ c = 0 pogoj je izpolnjen. Bo skoèil? DA
+b) bne	@ z = 0 pogoj je izpolnjen. Bo skoèil? DA
+c) bge	@ n = v pogoj ni izpolnjen. Bo skoèil? NE
+d) bls	@ c = 0 ali z = 1 pogoj je izpolnjen. Bo skoèil? DA
+e) bmi	@ n = 1 pogoj je izpolnjen. Bo skoèil? DA
+f) bcs	@ c = 1 pogoj ni izpolnjen. Bo skoèil? NE
+g) blt	@ n /= v pogoj je izpolnjen. Bo skoèil? DA
+
+4. naloga
+a)
+zanka: movs r1, #127
+bne zanka
+@ se vedno vrti v zanki
+
+b)
+zanka: movs r1, #127
+beq zanka
+@ se ne vrti vedno v zanki
+
+c)
+zanka: movs r1, #0
+beq zanka
+@ se vedno vrti v zanki
+
+d)
+zanka: mov r1, #1
+cmp r1, #25
+bmi zanka
+@ se vedno vrti v zanki

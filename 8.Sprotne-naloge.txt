@@ -1,0 +1,85 @@
+
+1)
+STEV1: .space 4			@(ox20)
+
+STEV2: .word 0x7fffffff		@(ox24)
+
+STEV3: .word 0x80000001		@(ox28)
+
+__start:
+
+	@STEV1 = STEV2 + STEV3
+	adr r0, STEV2
+	ldr r2,[r0]
+	ldr r3,[r0,#4]
+
+	adds r1,r2,r3    		@NZCV =(0110),r1=0
+
+	str r1, [r0,#-4]
+
+
+
+2)		
+
+STEV2: .word 0	
+
+STEV3: .word 0xffffffff	
+
+_start:
+	@STEV2 = STEV2 + STEV3	
+	adr r0, STEV2
+	ldr r2,[r0]
+	ldr r3,[r0,#4]
+
+	adds r1,r2,r3 
+	@NZCV =(1000) STEV 2 =FFFFFFFF
+	str r1, [r0]
+
+
+
+3) Naloga
+Zastavice: N=1, C=0 , Z=0, V=0
+
+P SKOK POGOJ		je/ni izpolnjen?		SKOK DA/NE?
+a)bcc  C=0 		Pogoje izpolnjen  		DA
+
+b)bne  Z=0 		Pogoj je izpolnjen 		DA
+
+c)bge  N=V 		Pogoj ni izpolnjen 		NE
+
+d)bls  C=0 | Z=1 	Pogoj je izpolnjen 		DA
+
+e)bmi  N=1		Pogoje je izpolnjen 		DA
+
+f)bcs  C=1		Pogoj ni izpolnjen		NE
+	
+g)blt  N ni enak V	Pogoje je izpolnjen 		DA
+
+
+
+4)Naloga
+
+a)
+zanka: movs r1,#127
+bne zanka
+ODG:
+da
+
+b)
+zanka: movs r1,#127
+beq zanka
+ODG:
+Ne 
+
+c)
+zanka: movs r1,#0
+beq zanka
+ODG:
+Da 
+
+d)
+zanka: mov r1,#1
+cmp r1,#25
+bmi zanka
+ODG:
+DA 

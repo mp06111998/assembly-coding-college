@@ -1,0 +1,85 @@
+7) naloga
+1) Ukaz, s katerim zapišemo konstanto 0 v register je:
+	movs	r1, #0
+pri tem se po izvedbi ukaza postavi zastavica Z na 1. Ker je rezultat operacije (rezultat 0 se je zapisal v register r1) enako 0.
+
+Rezultat po odštevanju z ukazom:
+	subs	r1, r1, #1
+
+je 0xFFFF FFFF. Vrednost rezultata nepredznaèeno je (2^32 -1). Vrednost predznaèenega je pa enaka (-1). 
+Stanje zastavic po izvedbi ukaza je NZCV = (1 0 0 0) - samo zastavica N se je posatvila na 1. Zastavica C se ni postavil, 
+ker pri odštevanju je prišlo do izposojenega bita pri zadnjem mestu (borrow) oziroma pri seštevanju števil 
+(pri èemer smo drugemu številu 1 obrnili predznak) ni prišlo do prenosa.
+
+Ukaz za prištevanje konstante 2 registru r1 je:
+	adds	r1, r1, #2
+
+Vrednost zastavic po izvedbi ukaza je:
+NZCV = (0 0 1 0)
+Postavila se je zastavica C (prenos), ker pri seštevanju negativnega števila pozitivnim je 
+prišlo v tem primeru do prenosa na zadnjem bitu.
+
+Rezultat se je zapisal v register r1 in ima:
+
+	-nepredznaèeno vrednost = 1
+	-predznaèeno vrednost = 1
+
+2) Ukaz, s katerim zapišemo konstanto 1 v registru r1 je:
+	movs	r1, #1
+
+Po izvedbi ukaza nobena zastavica v CPSR registru se je postavila na 1, kar pomeni, da imajo zastavice vrednost
+NZCV = (0 0 0 0)
+
+Rezultat operacije je konstanta 1 v registru r1.
+
+Ukaz, ki smo ga uporabljali za odštevanje je:
+	subs   r1, r1, #1
+
+Rezltat je enak 0, in se je nièla tudi zapisala v registru r1. Stanje zastavic po izvedbi ukaza je sedaj:
+NZCV = (0 1 1 0)
+
+Zastavica Z se je postavila na 1, ker je rezultat enak0. Zastavica C se je pa postavila na 1, ker pri odštevanju števil ni prišlo do izposoje
+bita na zadnjem mestu, oziroma pri seštevanju števil (pri èemer drugemu številu obrnili predznak) je prišlo do prenosa.
+
+Ponovno odštejemo konstanto 1 iz registra r1 z ukazom:
+	subs   r1, r1, #1
+
+Stanje zastavic po izvedbi ukaza je:
+NZCV = (1 0 0 0)
+
+Samo zastavica n se je postavila na 1.
+Tukaj pri odštevanju je prišlo do izposojenega bita na zadnjem mestu oziroma pri seštevanju drugega 
+števila z obrnjenem znakom ni prišlo do prenosa.
+
+V registru r1 imamo konèni rezultat, ki je:
+	-nepredznaèeno 0xFFFFFFFF = 2^32 - 1
+	-predznaèeno 0xFFFFFFFF = - 1
+
+3) 
+
+          .text
+
+STEV1:    .hword -10 
+          .align   
+STEV2:    .byte 0x64
+          .align
+STEV3:    .byte -2
+          .align
+          
+          .global __start
+__start:
+
+          adr r0, STEV2
+          ldrsb r1, [r0]
+          
+          adr r0, STEV3
+          ldrsb r2, [r0]
+          
+          adr r0, STEV1
+          ldrsh r3, [r0]
+          
+          adds r4, r1, r2
+          subs r3, r4, r3    
+          strh r3, [r0]  
+
+__end:    b __end   

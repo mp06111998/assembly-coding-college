@@ -1,0 +1,113 @@
+@Prva naloga
+.text   
+
+SPACE:    .space 8
+
+          .align
+          .global __start
+__start:                                           
+          adr r0, SPACE
+          mov r1, #0xFF
+loop:     strb r1, [r0]
+          add r0, #1
+          cmp r0, #0x28
+          bne loop
+          
+__end:    b __end
+
+@Druga naloga
+.text
+
+TABELA:   .byte 1,100,255,24,88,31,56,192,155,224
+REZULTAT: .hword 0
+
+          .align 
+          .global __start
+
+__start:
+
+        adr r0, TABELA
+        mov r1, #10
+        mov r2, #0
+zanka:	ldrb r3, [r0]
+	      add r2, r2, r3 
+
+	      add r0, r0, #1
+	      subs r1, r1, #1
+	      bne zanka
+	      adr r0, REZULTAT
+	      strh r2, [r0] @0x466
+
+__end:    b __end
+
+@Drugi del druge naloge
+.text
+
+TABELA:   .byte 1,100,255,24,88,31,56,192,155,224
+REZULTAT: .word 0
+
+          .align 
+          .global __start
+
+__start:
+
+        adr r0, TABELA
+        mov r1, #10
+        mov r2, #0
+zanka:	ldrh r3, [r0]
+	      add r2, r2, r3 
+
+	      add r0, r0, #2
+	      subs r1, r1, #1
+	      bne zanka
+	      adr r0, REZULTAT
+	      str r2, [r0]
+
+__end:    b __end
+
+@Tretja naloga
+.text
+
+TABELA: .byte 192,155,224,48,0,128,99,147,177,100
+
+          .align 
+          .global __start
+
+__start:
+        adr r0, TABELA
+        mov r2, #10 @stevec
+        mov r1, #0 @stevec stevil
+zanka: 	ldrb r3, [r0]
+	      cmp r3, #100
+	      addgt r1, r1, #1
+	
+	      add r0, r0, #1
+	      subs r2, r2, #1
+	      bne zanka
+
+__end:    b __end
+
+@Èetrta naloga
+.text
+
+TABELA: .hword 1,100,-255,24,-88,31,56,192,155,-224,0,101,-199,47
+
+          .align 
+          .global __start
+
+__start:
+        adr r0, TABELA
+        mov r1, #14
+        mov r2, #0
+zanka:	ldrsh r3, [r0]
+	        cmp r3, #-100
+	        blt dalje
+	        cmp r3, #100
+	        bge dalje
+	        strh r2, [r0]
+dalje:	  add r0, r0 ,#2
+	        sub r1, r1, #1
+	        bne zanka
+
+__end:    b __end
+

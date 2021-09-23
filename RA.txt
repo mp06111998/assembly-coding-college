@@ -1,0 +1,44 @@
+.text
+
+STEV1:		.byte 0x11 
+          .align 
+STEV2:		.hword 0x2222 @na poziciji deljivi z 2 mora bit!
+STEV3:		.word 0x33333333 @na poziciji deljivi z 4 mora bit!
+          
+          .align
+          .global __start
+
+__start:
+          adr r0, STEV1 @naslov
+          adr r1, STEV2 @naslov
+          ldrb r3, [r0] @nalozi vrednost r0 v r3 seveda b
+          ldrh r4, [r1] @nalozi h torej 16bitov
+          strh r4, [r0] @v ram vrednost r4 na pozicijo r0
+          strb r3, [r1] @r3 na pozicijo v pomnilniku r1
+          mov r2, #0x12 @v r2 definiramo konstanto 0x12 lahko bi tudi samo #12 ampak ni isto to bi bilo B
+          strb r2, [r0] @-||- 
+          add r0, r1, r3 @+
+          sub r0, r2, r3 @-
+          mov r1, r0 @v r1 prepisemo r0
+
+__end:    b __end
+
+Raèunalniška arhitektura
+Pri prvi nalogi sem najprej v r0 naložil lokacijo NIZ1 in prištel 4 zaradi tega, ker moramo zaèeti z èrko s, torej spustimo “Dane”. In v r4 sem naložil 
+lokacijo NIZ2. Nato sem naredil zanko, v kateri se v r1 naloži vrednost lokacije registra r1, torej prvo èrko. Primerjal sem vrednost r1 z konstanto #96, 
+ki je v ascii na mestu med velikimi in malimi èrkami. In potem sem, èe je r1 veèji od 96, potem je v r2 zapisal razliko med r1 in 32. 32 pa zato, ker je to 
+razmak med veliko in malo èrko v ascii primer med s in S. In seveda, potem preveri, èe je r1 manjši od 96 pa registru v r2 zapiše r1 plus 32. Nato imam ponovno 
+stavek cmp, ki mi preveri, èe je r2 #0x40, kar pomeni, da je bila prejšnja vrednost 0x20 to pa je znak za presledek v ascii. Torej presledku ne želim prišteti 
+nobene vrednosti ampak sem je že prej torej jo sedaj želim odšteti in sem v naslednjem koraku v r2 zapisal r2 minus #32 ali drugaèe namesto #32 bi lahko tudi 
+#0x20 kar je isto, le v drugem zapisu. Ker sem dobil željeno vrednost, sem sedaj iz registra r2, kjer je moja spremenjena vrednost zapisal na lokacijo r4, kjer 
+se zaène moj NIZ2 prav r2. Nato sem še prištel registru r0 vrednost 1, da se premakne do drugega znaka NIZ1. In r4 sem prištel tudi 1 zato, da sem se tudi v NIZ2 
+premaknil, da bom lahko v novem loop zapisal na naslednjo lokacijo. Nato samo na koncu še preverim kdaj r0 doseže lokacijo 0x30, ki je konec NIZ1, kar pomeni za zakljuèim z zanko loop.
+
+Pri drugi nalogi sem najprej dodal spremenljivki MIN in MIN_INDEKS. Nato sem od vseh treh spremenljivk zapisal lokacije v r0(tabela), r1(min) in r2(min_indeks). 
+V register r5 in register r6 sem še zapisal konstanto 0. Ena bo služila kot števec in sicer r5, ki se bo vsakiè ko vstopimo v nov loop poveèala za ena, druga 
+pa bo le držala vrednost indeksa najmanjšega števila. Nato vstopimo v zanko loop, ki v register r3 naloži vrednost lokacije registra r0 in v r4 naloži vrednost 
+lokacije r1. A naloži v ukazom ldrsh, ki pomeni load in s stoji za tem, da nam zapisuje zastavice, ki jih potrebujemo za primerjanje in h stoji za hword. Potem 
+primerjamo r3 in r4, èe je r3 manjši od r4, kar pomeni da je trenutna vrednost manjša od minimuma, potem se v r4 v minimum zapiše r3 trenutna vrednost. Nato iz 
+r4 naložimo vrednost v pomnilnik, ki je na lokaciji r1 in iz registra r6 naložimo v pomnilnik vrednost z lokacije registra r2. V naslednji fazi r0 dodamo vrednost 
+2, ker imamo vrednost velike 16b torej potrebujemo premik za #2. In registru r5 prištejemo 1, kar pomeni da smo števec poveèali za ena. Na koncu ponovno preverimo 
+ali je r0 dosegel lokacijo 0x36, kar je konec naše tabele. In ko je r0 enak 0x36 smo izstopili iz zanke in naš program se konèa.

@@ -1,0 +1,53 @@
+1)
+STEV1:		.space 4
+STEV2:		.word 0x7FFFFFFF
+STEV3:		.word 0x80000001
+
+_start:
+adr	r0, STEV2
+ldr	r2, [r0]	@R2 <- STEV2
+ldr	r3, r[r0,#4]	@R3 <- STEV3
+
+mov	r1,r2
+cmp	r2,r3
+bhi 	DALJE
+mov	r1,r3
+
+DALJE:	str 	r1,[r0,#-4]
+@
+@
+============================================
+@
+@
+2)
+STEV1:		.space 4
+STEV2:		.word 0x7FFFFFFF
+STEV3:		.word 0x80000001
+
+_start:
+adr	r0, STEV2
+ldr	r2, [r0]	@R2 <- STEV2
+ldr	r3, r[r0,#4]	@R3 <- STEV3
+
+mov	r1,r2
+cmp	r2,r3
+blo 	DALJE
+mov	r1,r3
+
+DALJE:	str 	r1,[r0,#-4]
+
+4)
+STEV1:		.word 127
+STEV2:		.word 115
+GCD:		.space 4
+
+adr 	r0, STEV1
+ldr	r1, [r0]
+ldr	r2, [r0, #4]
+
+ZANKA:	cmp	r1, r2
+
+	cmp	r1, r2
+L1:	R2=R2-R1
+goto zanka
+l2:

@@ -1,0 +1,155 @@
+1 naloga)
+.text
+
+STEV1:		.space 4
+STEV2:		.word 0x7FFFFFFF
+STEV3:		.word 0x80000001
+          
+          .align
+          .global __start
+
+__start:
+        @STEV1 = STEV2
+        @IF STEV2 > STEV3 THEN GOTO DALJE
+        @STEV1 = STEV3
+        @DALJE: …
+        adr	r0, STEV2
+        ldr	r2, [r0]	@R2 <- STEV2
+        ldr	r3, [r0,#4]	@R3 <- STEV3
+
+        mov	r1,r2
+        cmp	r2,r3
+        bhi 	DALJE
+        mov	r1,r3
+
+        DALJE:	
+        adr	r0, STEV1
+        str 	r1,[r0]
+
+__end:    b __end 
+
+2 naloga)
+.text
+
+STEV1:		.space 4
+STEV2:		.word 0x7FFFFFFF
+STEV3:		.word 0x80000001
+          
+          .align
+          .global __start
+
+__start:
+        @STEV1 = STEV2
+        @IF STEV2 < STEV3 THEN GOTO DALJE
+        @STEV1 = STEV3
+        @DALJE: …
+        adr	r0, STEV2
+        ldr	r2, [r0]	@R2 <- STEV2
+        ldr	r3, [r0,#4]	@R3 <- STEV3
+
+        mov	r1,r2
+        cmp	r2,r3
+        blo 	DALJE
+        mov	r1,r3
+
+        DALJE:	
+        adr	r0, STEV1
+        str 	r1,[r0]
+
+__end:    b __end
+
+3 naloga)
+@maksimum
+          .text
+          
+stev1:    .space  4
+stev2:    .word 1
+stev3:    .word -1
+
+          .align
+          .global __start
+__start:
+          adr r0, stev1
+          ldr r1, [r0]
+          
+          adr r0, stev2
+          ldr r2, [r0]
+          
+          adr r0, stev3
+          ldr r3, [r0]
+          
+          mov r1, r2
+          
+          cmp r2, r3
+          bgt dalje
+          mov r1, r3
+dalje:  @...  
+           
+
+__end:    b __end  
+
+@minimum
+          .text
+          
+stev1:    .space  4
+stev2:    .word 1
+stev3:    .word -1
+
+          .align
+          .global __start
+__start:
+          adr r0, stev1
+          ldr r1, [r0]
+          
+          adr r0, stev2
+          ldr r2, [r0]
+          
+          adr r0, stev3
+          ldr r3, [r0]
+          
+          mov r1, r2
+          
+          cmp r2, r3
+          blt dalje
+          mov r1, r3
+dalje:  @...  
+           
+
+__end:    b __end
+
+4 naloga)
+.text
+          
+stev1:    .word  45 
+stev2:    .word  105
+stev3:    .space
+
+          .align
+          .global __start
+__start:  
+          adr r0, stev2
+          ldr r2, [r0]
+          
+          adr r0, stev3
+          ldr r3, [r0]
+          
+          adr r0, stev1
+          ldr r1, [r0]
+          
+          str r2, [r0]
+          
+          adr r0, stev3
+ZANKA:    cmp r1, r2
+          blo L1
+          beq L2
+          sub r1, r1, r2
+          b ZANKA
+                         
+L1:       sub r2, r2, r1
+          b ZANKA
+
+L2:       str r2, [r0] 
+           
+
+__end:    b __end
+

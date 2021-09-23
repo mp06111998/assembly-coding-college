@@ -1,0 +1,10 @@
+NZCV
+N = rezultat je negativen #4-3 = -1  ->  to je FFFFFFFF in seveda N flag     NEGATIV
+Z = ko je niè, ker že prej vse vrednosti 00000000 in sedaj tudi samo da še flag   ZERRO
+C = pomeni prenos, pride do prenosa na zadnjem bitu     CARRY
+##ko odstevas in je rezultat pozitiven je LAHKO C = 1, ko pa negativen pa C = 0
+#ce je rezultat manjsi od zacetne vrednosti je C = 1... r3,r2,r1
+mora bit r3 manjsi od r2 da je C = 1...
+
+##pri sestevanju je ko je rezultat iz negativnega stevila v pozitivno je C = 1
+V = ?

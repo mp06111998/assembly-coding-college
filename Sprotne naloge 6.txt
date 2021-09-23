@@ -1,0 +1,76 @@
+a) Sta STEV1 in STEV2 8-bitni nepredznaèeni spremenljivki z zaèetnima 
+vrednostima 15(10) in 130(10).
+
+			  .text
+			  
+	stev1:    .byte   15
+	stev2:    .byte   130
+
+			  .align
+			  .global __start
+	__start:
+
+			  adr r0, stev1
+			  ldrb r1, [r0]
+		
+			  adr r0, stev2
+			  ldrb r2, [r0]
+			  
+			  add r3, r1, r2
+			  
+			  adr r0, stev1
+			  strb r3, [r0]
+			   
+	__end:    b __end   
+
+
+b) Sta STEV1 in STEV2 8-bitni predznaèeni spremenljivki z zaèetnima 
+vrednostima 15(10) in 130(10).
+
+			  .text
+			  
+	stev1:    .byte   15
+	stev2:    .byte   130
+
+			  .align
+			  .global __start
+	__start:
+
+			  adr r0, stev1
+			  ldrsb r1, [r0]
+		
+			  adr r0, stev2
+			  ldrsb r2, [r0]
+			  
+			  add r3, r1, r2
+			  
+			  adr r0, stev1
+			  strb r3, [r0]
+			   
+	__end:    b __end   
+
+
+c) Je STEV1 32-bitna spremenljivka, STEV2 pa 8-bitna predznaèena spremenljivka. 
+Zaèetni vrednosti sta: STEV1 = 128(10), STEV2 = 128(10).
+
+			  .text
+			  
+	stev1:    .word   128
+	stev2:    .byte   128
+
+			  .align
+			  .global __start
+	__start:
+
+			  adr r0, stev1
+			  ldr r1, [r0]
+		
+			  adr r0, stev2
+			  ldrsb r2, [r0]
+			  
+			  add r3, r1, r2
+			  
+			  adr r0, stev1
+			  str r3, [r0]
+			   
+	__end:    b __end  
